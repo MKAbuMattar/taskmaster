@@ -8,6 +8,15 @@ import android.widget.TextView;
 
 public class AddTask extends AppCompatActivity {
 
+
+  private View.OnClickListener newTaskCreateListener = new View.OnClickListener() {
+    public void onClick(View v) {
+      TextView successLabel = findViewById(R.id.newTaskSubmitSuccess);
+      successLabel.setVisibility(View.VISIBLE);
+
+    }
+  };
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -20,10 +29,4 @@ public class AddTask extends AppCompatActivity {
     newTaskCreateButton.setOnClickListener(newTaskCreateListener);
   }
 
-  private View.OnClickListener newTaskCreateListener = new View.OnClickListener() {
-    public void onClick(View v) {
-      TextView successLabel = findViewById(R.id.newTaskSubmitSuccess);
-      successLabel.setVisibility(View.VISIBLE);
-    }
-  };
 }
