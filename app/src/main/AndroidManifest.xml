@@ -26,6 +26,15 @@
             android:name=".AddTask"
             android:parentActivityName=".MainActivity"
             />
+        <activity
+            android:name=".TaskDetail"
+            android:parentActivityName=".MainActivity"
+            />
+
+        <activity
+            android:name=".Settings"
+            android:parentActivityName=".MainActivity"
+            />
     </application>
 
 </manifest>
