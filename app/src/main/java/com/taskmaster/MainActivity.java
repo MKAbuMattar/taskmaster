@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+  public static final String TASKNAMA = "taskName";
+
     @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -22,8 +24,11 @@ public class MainActivity extends AppCompatActivity {
     Button allTasksButton = findViewById(R.id.allTasksButton);
     allTasksButton.setOnClickListener(goToAllTasks);
 
-    Button makeDinnerButton = findViewById(R.id.makeTaskDetailsButton);
-    makeDinnerButton.setOnClickListener(goToTaskDetail);
+    Button makeTaskDetailsButton = findViewById(R.id.makeTaskDetailsButton);
+      makeTaskDetailsButton.setOnClickListener(goToTaskDetail);
+
+      Button makeTaskDetailsButton1 = findViewById(R.id.makeTaskDetailsButton1);
+      makeTaskDetailsButton1.setOnClickListener(goToTaskDetail1);
 
     Button settingsButton = findViewById(R.id.settingsButton);
     settingsButton.setOnClickListener(goToSettings);
@@ -55,7 +60,20 @@ public class MainActivity extends AppCompatActivity {
 
   private final View.OnClickListener goToTaskDetail = new View.OnClickListener() {
     public void onClick(View v) {
+      Button makeTaskDetailsButton = findViewById(R.id.makeTaskDetailsButton);
+      String buttonText = makeTaskDetailsButton.getText().toString();
       Intent i = new Intent(getBaseContext(), TaskDetail.class);
+      i.putExtra(TASKNAMA, buttonText);
+      startActivity(i);
+    }
+  };
+
+  private final View.OnClickListener goToTaskDetail1 = new View.OnClickListener() {
+    public void onClick(View v) {
+      Button makeTaskDetailsButton1 = findViewById(R.id.makeTaskDetailsButton1);
+      String buttonText = makeTaskDetailsButton1.getText().toString();
+      Intent i = new Intent(getBaseContext(), TaskDetail.class);
+      i.putExtra(TASKNAMA, buttonText);
       startActivity(i);
     }
   };
