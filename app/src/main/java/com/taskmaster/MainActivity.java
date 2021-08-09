@@ -18,18 +18,28 @@ public class MainActivity extends AppCompatActivity {
 
     Button allTasksButton = findViewById(R.id.allTasksButton);
     allTasksButton.setOnClickListener(goToAllTasks);
+
+      Button makeDinnerButton = findViewById(R.id.makeTaskDetailsButton);
+      makeDinnerButton.setOnClickListener(goToTaskDetail);
   }
 
-  private View.OnClickListener goToNewTaskCreator = new View.OnClickListener() {
+  private final View.OnClickListener goToNewTaskCreator = new View.OnClickListener() {
     public void onClick(View v) {
       Intent i = new Intent(getBaseContext(), AddTask.class);
       startActivity(i);
     }
   };
 
-  private View.OnClickListener goToAllTasks = new View.OnClickListener() {
+  private final View.OnClickListener goToAllTasks = new View.OnClickListener() {
     public void onClick(View v) {
       Intent i = new Intent(getBaseContext(), AllTasks.class);
+      startActivity(i);
+    }
+  };
+
+  private final View.OnClickListener goToTaskDetail = new View.OnClickListener() {
+    public void onClick(View v) {
+      Intent i = new Intent(getBaseContext(), TaskDetail.class);
       startActivity(i);
     }
   };
