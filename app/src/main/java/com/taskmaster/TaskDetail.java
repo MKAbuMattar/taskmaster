@@ -3,6 +3,7 @@ package com.taskmaster;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 public class TaskDetail extends AppCompatActivity {
 
@@ -13,5 +14,9 @@ public class TaskDetail extends AppCompatActivity {
     setContentView(R.layout.activity_task_detail);
 
     getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
+    String taskName = getIntent().getStringExtra(MainActivity.TASKNAMA);
+    TextView taskTitle = findViewById(R.id.taskDetailTitle);
+    taskTitle.setText(taskName);
   }
 }
