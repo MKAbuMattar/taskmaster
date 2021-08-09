@@ -30,7 +30,11 @@ public class MainActivity extends AppCompatActivity {
       Button makeTaskDetailsButton1 = findViewById(R.id.makeTaskDetailsButton1);
       makeTaskDetailsButton1.setOnClickListener(goToTaskDetail1);
 
-    Button settingsButton = findViewById(R.id.settingsButton);
+      Button makeTaskDetailsButton2 = findViewById(R.id.makeTaskDetailsButton2);
+      makeTaskDetailsButton2.setOnClickListener(goToTaskDetail2);
+
+
+      Button settingsButton = findViewById(R.id.settingsButton);
     settingsButton.setOnClickListener(goToSettings);
   }
 
@@ -72,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View v) {
       Button makeTaskDetailsButton1 = findViewById(R.id.makeTaskDetailsButton1);
       String buttonText = makeTaskDetailsButton1.getText().toString();
+      Intent i = new Intent(getBaseContext(), TaskDetail.class);
+      i.putExtra(TASKNAMA, buttonText);
+      startActivity(i);
+    }
+  };
+
+  private final View.OnClickListener goToTaskDetail2 = new View.OnClickListener() {
+    public void onClick(View v) {
+      Button makeTaskDetailsButton2 = findViewById(R.id.makeTaskDetailsButton2);
+      String buttonText = makeTaskDetailsButton2.getText().toString();
       Intent i = new Intent(getBaseContext(), TaskDetail.class);
       i.putExtra(TASKNAMA, buttonText);
       startActivity(i);
