@@ -53,11 +53,11 @@
         android:id="@+id/makeTaskDetailsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="136dp"
         android:text="@string/make_task_details"
-        app:layout_constraintBottom_toTopOf="@+id/addTaskButton"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="36dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"  />
 
     <Button
         android:id="@+id/settingsButton"
@@ -68,6 +68,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/allTasksButton"
         app:layout_constraintStart_toEndOf="@+id/addTaskButton" />
+
+    <TextView
+        android:id="@+id/userTasksLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/makeTaskDetailsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

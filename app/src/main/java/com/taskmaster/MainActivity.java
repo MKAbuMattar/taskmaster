@@ -1,10 +1,13 @@
 package com.taskmaster;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +27,16 @@ public class MainActivity extends AppCompatActivity {
 
     Button settingsButton = findViewById(R.id.settingsButton);
     settingsButton.setOnClickListener(goToSettings);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    String username = preference.getString("username", "user") + "'s Tasks";
+    TextView userLabel = findViewById(R.id.userTasksLabel);
+    userLabel.setText(username);
   }
 
   private final View.OnClickListener goToNewTaskCreator = new View.OnClickListener() {

@@ -22,8 +22,8 @@ public class Settings extends AppCompatActivity {
 
     getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-//    Button saveUsernameButton = findViewById(R.id.usernameSaveButton);
-//    saveUsernameButton.setOnClickListener(updateUsernameListener);
+    Button saveUsernameButton = findViewById(R.id.usernameSaveButton);
+    saveUsernameButton.setOnClickListener(updateUsernameListener);
   }
 
   private final View.OnClickListener updateUsernameListener = new View.OnClickListener() {
