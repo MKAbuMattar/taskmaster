@@ -59,5 +59,15 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="36dp" />
 
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:text="@string/settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/allTasksButton"
+        app:layout_constraintStart_toEndOf="@+id/addTaskButton" />
+
 
 </android.support.constraint.ConstraintLayout>
