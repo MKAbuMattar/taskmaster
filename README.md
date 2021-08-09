@@ -20,3 +20,8 @@ Screen Shots Log
 ![](screenshots/Screenshot_6.png)
 
 ![](screenshots/Screenshot_7.png)
+
+![](screenshots/Screenshot_8.png)
+
+![](screenshots/Screenshot_9.png)
+
