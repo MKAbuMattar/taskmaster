@@ -1,10 +1,10 @@
-package com.taskmaster;
+package com.taskmaster.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Objects;
+import com.taskmaster.R;
 
 public class AllTasks extends AppCompatActivity {
 
