@@ -1,11 +1,13 @@
-package com.taskmaster;
+package com.taskmaster.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.taskmaster.R;
 
 public class AddTask extends AppCompatActivity {
 

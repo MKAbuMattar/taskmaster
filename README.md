@@ -5,7 +5,7 @@ Teams may use this Android app to handle tasks. Adding, assigning, tracking, and
 
 ***
 
-Screen Shots Log
+Screen Shots Log / 09/08/2021
 
 ![](screenshots/Screenshot_1.png)
 
@@ -25,3 +25,29 @@ Screen Shots Log
 
 ![](screenshots/Screenshot_9.png)
 
+
+***
+
+Screen Shots Log / 11/08/2021
+
+![](screenshots/lab28/Screenshot_1.png)
+
+![](screenshots/lab28/Screenshot_2.png)
+
+![](screenshots/lab28/Screenshot_3.png)
+
+![](screenshots/lab28/Screenshot_4.png)
+
+![](screenshots/lab28/Screenshot_5.png)
+
+![](screenshots/lab28/Screenshot_6.png)
+
+![](screenshots/lab28/Screenshot_7.png)
+
+![](screenshots/lab28/Screenshot_8.png)
+
+![](screenshots/lab28/Screenshot_9.png)
+
+![](screenshots/lab28/Screenshot_10.png)
+
+![](screenshots/lab28/Screenshot_11.png)
