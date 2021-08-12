@@ -8,14 +8,18 @@ import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.taskmaster.R;
 import com.taskmaster.adapter.TaskAdapter;
+import com.taskmaster.dao.TaskDao;
+import com.taskmaster.database.TaskDatabase;
 import com.taskmaster.model.Task;
 
 import java.util.ArrayList;
@@ -26,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
   public static final String TASK_TITLE = "taskTitle";
   public static final String TASK_BODY = "taskBody";
   public static final String TASK_STATUS = "taskStatus";
+  public static final String TASK_LIST = "TaskList";
+
+  private TaskDatabase database;
+  private TaskDao taskDao;
 
   private List<Task> taskList;
   private TaskAdapter adapter;
@@ -35,14 +43,25 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    RecyclerView taskRecyclerView = findViewById(R.id.List_tasks);
-    taskList = new ArrayList<>();
-    taskList.add(new Task("Task 1","get some rest","new"));
-    taskList.add(new Task("Task 2","work on code challenge for today","assigned"));
-    taskList.add(new Task("Task 3","do lab work for today","in progress"));
-    taskList.add(new Task("Task 4","visit family","complete"));
+    database = Room.databaseBuilder(
+        this,
+        TaskDatabase.class,
+        TASK_LIST
+    ).allowMainThreadQueries().build();
 
-    adapter = new TaskAdapter(taskList, new TaskAdapter.OnFoodItemClickListener() {
+    taskDao = database.taskDao();
+
+
+    RecyclerView taskRecyclerView = findViewById(R.id.List_tasks);
+//    taskList = new ArrayList<>();
+//    taskList.add(new Task("Task 1","get some rest","new"));
+//    taskList.add(new Task("Task 2","work on code challenge for today","assigned"));
+//    taskList.add(new Task("Task 3","do lab work for today","in progress"));
+//    taskList.add(new Task("Task 4","visit family","complete"));
+
+    taskList = taskDao.findAll();
+
+    adapter = new TaskAdapter(taskList, new TaskAdapter.OnTaskItemClickListener() {
       @Override
       public void onItemClicked(int position) {
         Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
@@ -54,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
       @Override
       public void onDeleteItem(int position) {
+        taskDao.delete(taskList.get(position));
         taskList.remove(position);
         listItemDeleted();
       }

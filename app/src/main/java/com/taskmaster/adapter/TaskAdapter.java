@@ -3,7 +3,6 @@ package com.taskmaster.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,14 +16,14 @@ import com.taskmaster.R;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
 
   private final List<Task> taskItems;
-  private OnFoodItemClickListener listener;
+  private final OnTaskItemClickListener listener;
 
-  public TaskAdapter(List<Task> foodItems, OnFoodItemClickListener listener) {
-    this.taskItems = foodItems;
+  public TaskAdapter(List<Task> taskItems, OnTaskItemClickListener listener) {
+    this.taskItems = taskItems;
     this.listener = listener;
   }
 
-  public interface OnFoodItemClickListener {
+  public interface OnTaskItemClickListener {
     void onItemClicked(int position);
     void onDeleteItem(int position);
   }
@@ -51,21 +50,30 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
 
   static class ViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView title;
-    private TextView body;
-    private TextView status;
+    private final TextView title;
+    private final TextView body;
+    private final TextView status;
+    private final TextView delete;
 
-    ViewHolder(@NonNull View itemView, OnFoodItemClickListener listener) {
+    ViewHolder(@NonNull View itemView, OnTaskItemClickListener listener) {
       super(itemView);
 
       title = itemView.findViewById(R.id.title_label);
       body = itemView.findViewById(R.id.body_label);
       status = itemView.findViewById(R.id.status_label);
+      delete = itemView.findViewById(R.id.delete);
 
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
           listener.onItemClicked(getAdapterPosition());
+        }
+      });
+
+      delete.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          listener.onDeleteItem(getAdapterPosition());
         }
       });
     }
