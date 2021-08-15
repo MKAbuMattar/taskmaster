@@ -52,7 +52,7 @@ public class AddTask extends AppCompatActivity {
 
       @Override
       public void onNothingSelected(AdapterView<?> parent) {
-
+        spinner_task_status = (String) parent.getItemAtPosition(0);
       }
     });
 
