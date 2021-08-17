@@ -8,9 +8,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.taskmaster.model.Task;
+//import com.taskmaster.model.Task;
 
 import java.util.List;
+
+import com.amplifyframework.datastore.generated.model.Task;
 import com.taskmaster.R;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
@@ -39,7 +41,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
   public void onBindViewHolder(@NonNull TaskAdapter.ViewHolder holder, int position) {
     Task item = taskItems.get(position);
     holder.title.setText(item.getTitle());
-    holder.body.setText(item.getBody());
+    holder.body.setText(item.getDescription());
     holder.status.setText(item.getStatus());
   }
 

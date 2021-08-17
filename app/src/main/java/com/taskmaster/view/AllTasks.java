@@ -41,44 +41,44 @@ public class AllTasks extends AppCompatActivity {
 
     getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-    database = Room.databaseBuilder(
-        this,
-        TaskDatabase.class,
-        TASK_LIST
-    ).allowMainThreadQueries().build();
-
-    taskDao = database.taskDao();
-
-
-    RecyclerView taskRecyclerView = findViewById(R.id.List_tasks);
-
-    taskList = taskDao.findAll();
-
-    adapter = new TaskAdapter(taskList, new TaskAdapter.OnTaskItemClickListener() {
-      @Override
-      public void onItemClicked(int position) {
-        Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
-        goToDetailsIntent.putExtra(TASK_TITLE, taskList.get(position).getTitle());
-        goToDetailsIntent.putExtra(TASK_BODY, taskList.get(position).getBody());
-        goToDetailsIntent.putExtra(TASK_STATUS, taskList.get(position).getStatus());
-        startActivity(goToDetailsIntent);
-      }
-
-      @Override
-      public void onDeleteItem(int position) {
-        taskDao.delete(taskList.get(position));
-        taskList.remove(position);
-        listItemDeleted();
-      }
-    });
-
-    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
-        this,
-        LinearLayoutManager.VERTICAL,
-        false);
-
-    taskRecyclerView.setLayoutManager(linearLayoutManager);
-    taskRecyclerView.setAdapter(adapter);
+//    database = Room.databaseBuilder(
+//        this,
+//        TaskDatabase.class,
+//        TASK_LIST
+//    ).allowMainThreadQueries().build();
+//
+//    taskDao = database.taskDao();
+//
+//
+//    RecyclerView taskRecyclerView = findViewById(R.id.List_tasks);
+//
+//    taskList = taskDao.findAll();
+//
+//    adapter = new TaskAdapter(taskList, new TaskAdapter.OnTaskItemClickListener() {
+//      @Override
+//      public void onItemClicked(int position) {
+//        Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
+//        goToDetailsIntent.putExtra(TASK_TITLE, taskList.get(position).getTitle());
+//        goToDetailsIntent.putExtra(TASK_BODY, taskList.get(position).getBody());
+//        goToDetailsIntent.putExtra(TASK_STATUS, taskList.get(position).getStatus());
+//        startActivity(goToDetailsIntent);
+//      }
+//
+//      @Override
+//      public void onDeleteItem(int position) {
+//        taskDao.delete(taskList.get(position));
+//        taskList.remove(position);
+//        listItemDeleted();
+//      }
+//    });
+//
+//    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+//        this,
+//        LinearLayoutManager.VERTICAL,
+//        false);
+//
+//    taskRecyclerView.setLayoutManager(linearLayoutManager);
+//    taskRecyclerView.setAdapter(adapter);
 
   }
 
