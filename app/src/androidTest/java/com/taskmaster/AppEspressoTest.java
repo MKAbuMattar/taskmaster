@@ -66,11 +66,14 @@ public class AppEspressoTest {
   }
 
   @Test
-  public void testOpenTaskAtTaskDetail(){
+  public void testOpenTaskAtTaskDetail() throws InterruptedException {
     onView(ViewMatchers.withId(R.id.List_tasks)).check(matches(isDisplayed()));
+
+    Thread.sleep(5000);
 
     onView(withId(R.id.List_tasks))
         .perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+
 
     onView(withId(R.id.taskDetailTitle)).check(matches(withText("New Task")));
     onView(withId(R.id.taskDetails)).check(matches(withText("Task Details")));
