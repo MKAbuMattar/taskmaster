@@ -14,10 +14,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplifyframework.datastore.generated.model.Task;
 import com.taskmaster.R;
 import com.taskmaster.dao.TaskDao;
 import com.taskmaster.database.TaskDatabase;
-import com.taskmaster.model.Task;
+//import com.taskmaster.model.Task;
 
 public class AddTask extends AppCompatActivity {
 
@@ -72,8 +73,12 @@ public class AddTask extends AppCompatActivity {
       String taskBody = ((EditText) findViewById(R.id.newTaskBody)).getText().toString();
       String taskStatus = spinner_task_status;
 
+
+      Task item = Task.builder().title(taskTitle).description(taskBody).status(taskStatus).build();
+      MainActivity.saveTaskToAPI(item);
+
 //      taskDao.insertOne(new Task(taskTitle,taskBody,taskStatus));
-      MainActivity.saveDataToAmplify(taskTitle, taskBody, taskStatus);
+//      MainActivity.saveDataToAmplify(taskTitle, taskBody, taskStatus);
 
       TextView successLabel = findViewById(R.id.newTaskSubmitSuccess);
       successLabel.setVisibility(View.VISIBLE);

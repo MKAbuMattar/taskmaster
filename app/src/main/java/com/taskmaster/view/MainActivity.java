@@ -1,10 +1,16 @@
 package com.taskmaster.view;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
@@ -36,19 +45,24 @@ public class MainActivity extends AppCompatActivity {
   public static final String TASK_BODY = "taskBody";
   public static final String TASK_STATUS = "taskStatus";
   public static final String TASK_LIST = "TaskList";
+  private static final String TAG = "MainActivity";
 
 //  private TaskDatabase database;
 //  private TaskDao taskDao;
 
-  private static List<Task> taskList;
+  private static List<Task> taskList = new ArrayList<>();;
   private static TaskAdapter adapter;
+  private Handler handler;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    taskList = new ArrayList<>();
+
     try {
       Amplify.addPlugin(new AWSDataStorePlugin());
+      Amplify.addPlugin(new AWSApiPlugin());
       Amplify.configure(getApplicationContext());
 
       Log.i("Tutorial", "Initialized Amplify");
@@ -68,6 +82,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     RecyclerView taskRecyclerView = findViewById(R.id.List_tasks);
+
+    handler = new Handler(Looper.getMainLooper(),
+        new Handler.Callback() {
+          @Override
+          public boolean handleMessage(@NonNull Message message) {
+            listItemDeleted();
+            return false;
+          }
+        });
+
+    if (isNetworkAvailable(getApplicationContext())) {
+      getTaskDataFromAPI();
+      Log.i(TAG, "NET: the network is available");
+    } else {
+      getDataFromAmplify();
+      Log.i(TAG, "NET: net down");
+    }
+
     taskList = new ArrayList<>();
 //    taskList.add(new Task("Task 1","get some rest","new"));
 //    taskList.add(new Task("Task 2","work on code challenge for today","assigned"));
@@ -89,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onDeleteItem(int position) {
 //        taskDao.delete(taskList.get(position));
+
+        Amplify.API.mutate(ModelMutation.delete(taskList.get(position)),
+            response -> Log.i(TAG, "item deleted from API:" ),
+            error -> Log.e(TAG, "Delete failed", error)
+        );
 
         Amplify.DataStore.delete(taskList.get(position),
             success -> Log.i("Tutorial", "item deleted: " + success.item().toString()),
@@ -216,6 +253,33 @@ public class MainActivity extends AppCompatActivity {
     );
 
     return list;
+  }
+
+  public boolean isNetworkAvailable(Context context) {
+    ConnectivityManager connectivityManager =
+        ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+    return connectivityManager.getActiveNetworkInfo() != null && connectivityManager
+        .getActiveNetworkInfo().isConnected();
+  }
+
+  public static void saveTaskToAPI(Task item) {
+    Amplify.API.mutate(ModelMutation.create(item),
+        success -> Log.i(TAG, "Saved item to api : " + success.getData().getTitle()),
+        error -> Log.e(TAG, "Could not save item to API/dynamodb", error));
+
+  }
+
+  public  void getTaskDataFromAPI() {
+    Amplify.API.query(ModelQuery.list(Task.class),
+        response -> {
+          for (Task task : response.getData()) {
+            taskList.add(task);
+            Log.i(TAG, "getFrom api: the Task from api are => " + task.getTitle());
+          }
+          handler.sendEmptyMessage(1);
+        },
+        error -> Log.e(TAG, "getFrom api: Failed to get Task from api => " + error.toString())
+    );
   }
 
   @SuppressLint("NotifyDataSetChanged")
