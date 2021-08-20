@@ -30,6 +30,7 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
 import com.taskmaster.R;
 import com.taskmaster.adapter.TaskAdapter;
 import com.taskmaster.dao.TaskDao;
@@ -50,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
 //  private TaskDatabase database;
 //  private TaskDao taskDao;
 
-  private static List<Task> taskList = new ArrayList<>();;
+  private static List<Task> taskList = new ArrayList<>();
+  ;
   private static TaskAdapter adapter;
   private Handler handler;
+  private Team teamData = null;
+  private String teamNameData = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     taskList = new ArrayList<>();
 
     try {
-      Amplify.addPlugin(new AWSDataStorePlugin());
+//      Amplify.addPlugin(new AWSDataStorePlugin());
       Amplify.addPlugin(new AWSApiPlugin());
       Amplify.configure(getApplicationContext());
 
@@ -92,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
           }
         });
 
-    if (isNetworkAvailable(getApplicationContext())) {
-      getTaskDataFromAPI();
-      Log.i(TAG, "NET: the network is available");
-    } else {
-      getDataFromAmplify();
-      Log.i(TAG, "NET: net down");
-    }
+//    if (isNetworkAvailable(getApplicationContext())) {
+//      getTaskDataFromAPI();
+//      Log.i(TAG, "NET: the network is available");
+//    } else {
+////      getDataFromAmplify();
+//      Log.i(TAG, "NET: net down");
+//    }
 
     taskList = new ArrayList<>();
 //    taskList.add(new Task("Task 1","get some rest","new"));
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 //    taskList.add(new Task("Task 3","do lab work for today","in progress"));
 //    taskList.add(new Task("Task 4","visit family","complete"));
 //
-    taskList = getDataFromAmplify();
+//    taskList = getDataFromAmplify();
 
     adapter = new TaskAdapter(taskList, new TaskAdapter.OnTaskItemClickListener() {
       @Override
@@ -123,13 +127,13 @@ public class MainActivity extends AppCompatActivity {
 //        taskDao.delete(taskList.get(position));
 
         Amplify.API.mutate(ModelMutation.delete(taskList.get(position)),
-            response -> Log.i(TAG, "item deleted from API:" ),
+            response -> Log.i(TAG, "item deleted from API:"),
             error -> Log.e(TAG, "Delete failed", error)
         );
 
-        Amplify.DataStore.delete(taskList.get(position),
-            success -> Log.i("Tutorial", "item deleted: " + success.item().toString()),
-            failure -> Log.e("Tutorial", "Could not query DataStore", failure));
+//        Amplify.DataStore.delete(taskList.get(position),
+//            success -> Log.i("Tutorial", "item deleted: " + success.item().toString()),
+//            failure -> Log.e("Tutorial", "Could not query DataStore", failure));
 
         taskList.remove(position);
         listItemDeleted();
@@ -162,6 +166,14 @@ public class MainActivity extends AppCompatActivity {
     Button settingsButton = findViewById(R.id.settingsButton);
     settingsButton.setOnClickListener(goToSettings);
 
+//    Team team = Team.builder().name("team 3").build();
+//
+//        Amplify.API.mutate(ModelMutation.create(team),
+//                success -> Log.i(TAG, "Saved Team to api : " + success.getData()),
+//                error -> Log.e(TAG, "Could not save Team to API/dynamodb", error));
+
+    getTaskDataFromAPI();
+
   }
 
   @Override
@@ -170,9 +182,26 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     String username = preference.getString("username", "user") + "'s Tasks";
+    String teamName = "Your Team Name is: " + preference.getString("teamName", "Choose your team");
+    teamNameData = preference.getString("teamName", null);
     TextView userLabel = findViewById(R.id.userTasksLabel);
+    TextView teamNameLabel = findViewById(R.id.teamTasksLabel);
     userLabel.setText(username);
-    getDataFromAmplify();
+    teamNameLabel.setText(teamName);
+
+    if (teamNameData!= null){
+      getTeamDetailFromAPIByName();
+      try {
+        Thread.sleep(2000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      taskList.clear();
+      Log.i(TAG, "-----selected team true-------- ");
+      Log.i(TAG, teamNameData);
+      getTaskDataFromAPIByTeam();
+    }
+
   }
 
   private final View.OnClickListener goToNewTaskCreator = new View.OnClickListener() {
@@ -226,34 +255,34 @@ public class MainActivity extends AppCompatActivity {
     }
   };
 
-  public static void  saveDataToAmplify(String title,String body ,String status){
-    Task item = Task.builder().title(title).description(body).status(status).build();
+//  public static void  saveDataToAmplify(String title,String body ,String status){
+//    Task item = Task.builder().title(title).description(body).status(status).build();
+//
+//    Amplify.DataStore.save(item,
+//        success -> Log.i("Tutorial", "Saved item: " + success.item().toString()),
+//        error -> Log.e("Tutorial", "Could not save item to DataStore", error)
+//    );
+//    listItemDeleted();
+//  }
 
-    Amplify.DataStore.save(item,
-        success -> Log.i("Tutorial", "Saved item: " + success.item().toString()),
-        error -> Log.e("Tutorial", "Could not save item to DataStore", error)
-    );
-    listItemDeleted();
-  }
-
-  public synchronized static List<Task> getDataFromAmplify(){
-    System.out.println("In get data");
-    List<Task> list = new ArrayList<>();
-    Amplify.DataStore.query(Task.class,todos ->{
-          while (todos.hasNext()) {
-            Task todo = todos.next();
-            list.add(todo);
-            Log.i("Tutorial", "==== Task ====");
-            Log.i("Tutorial", "Name: " + todo.getTitle());
-            Log.i("Tutorial", "status: " + todo.getStatus());
-            Log.i("Tutorial", "==== Task End ====");
-          }
-        },                failure -> Log.e("Tutorial", "Could not query DataStore", failure)
-
-    );
-
-    return list;
-  }
+//  public synchronized static List<Task> getDataFromAmplify(){
+//    System.out.println("In get data");
+//    List<Task> list = new ArrayList<>();
+//    Amplify.DataStore.query(Task.class,todos ->{
+//          while (todos.hasNext()) {
+//            Task todo = todos.next();
+//            list.add(todo);
+//            Log.i("Tutorial", "==== Task ====");
+//            Log.i("Tutorial", "Name: " + todo.getTitle());
+//            Log.i("Tutorial", "status: " + todo.getStatus());
+//            Log.i("Tutorial", "==== Task End ====");
+//          }
+//        },                failure -> Log.e("Tutorial", "Could not query DataStore", failure)
+//
+//    );
+//
+//    return list;
+//  }
 
   public boolean isNetworkAvailable(Context context) {
     ConnectivityManager connectivityManager =
@@ -269,12 +298,46 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
-  public  void getTaskDataFromAPI() {
+  public void getTaskDataFromAPI() {
+
     Amplify.API.query(ModelQuery.list(Task.class),
         response -> {
           for (Task task : response.getData()) {
             taskList.add(task);
-            Log.i(TAG, "getFrom api: the Task from api are => " + task.getTitle());
+            Log.i(TAG, "getFrom api: the Task from api are => " + task.toString());
+          }
+          handler.sendEmptyMessage(1);
+        },
+        error -> Log.e(TAG, "getFrom api: Failed to get Task from api => " + error.toString())
+    );
+  }
+
+
+  public void getTeamDetailFromAPIByName() {
+      Amplify.API.query(
+          ModelQuery.list(Team.class, Team.NAME.contains(teamNameData)),
+          response -> {
+            for (Team teamDetail : response.getData()) {
+              Log.i(TAG, teamDetail.toString());
+              teamData = teamDetail;
+            }
+          },
+          error -> Log.e(TAG, "Query failure", error)
+      );
+  }
+
+  public  void  getTaskDataFromAPIByTeam(){
+    Log.i(TAG, "getTaskDataFromAPIByTeam: get task by team");
+
+    Amplify.API.query(ModelQuery.list(Task.class, Task.TEAM.contains(teamData.getId())),
+        response -> {
+          for (Task task : response.getData()) {
+
+            Log.i(TAG, "task-team-id: " + task.getTeam().getId());
+            Log.i(TAG, "team-id: "+ teamData.getId());
+            taskList.add(task);
+
+            Log.i(TAG, "getFrom api by team: the Task from api are => " + task);
           }
           handler.sendEmptyMessage(1);
         },

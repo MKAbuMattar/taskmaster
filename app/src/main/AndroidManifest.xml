@@ -24,21 +24,17 @@
         </activity>
         <activity
             android:name=".view.AllTasks"
-            android:parentActivityName=".view.MainActivity"
-            />
+            android:parentActivityName=".view.MainActivity" />
         <activity
             android:name=".view.AddTask"
-            android:parentActivityName=".view.MainActivity"
-            />
+            android:parentActivityName=".view.MainActivity" />
         <activity
             android:name=".view.TaskDetail"
-            android:parentActivityName=".view.MainActivity"
-            />
+            android:parentActivityName=".view.MainActivity" />
 
         <activity
             android:name=".view.Settings"
-            android:parentActivityName=".view.MainActivity"
-            />
+            android:parentActivityName=".view.MainActivity" />
     </application>
 
 </manifest>

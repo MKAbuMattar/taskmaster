@@ -15,7 +15,7 @@ import java.util.List;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.taskmaster.R;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
   private final List<Task> taskItems;
   private final OnTaskItemClickListener listener;
@@ -27,6 +27,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
 
   public interface OnTaskItemClickListener {
     void onItemClicked(int position);
+
     void onDeleteItem(int position);
   }
 

@@ -1,51 +1,175 @@
 # this is an auto generated file. This will be overwritten
+query SyncTasks(
+    $filter: ModelTaskFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+) {
+    syncTasks(
+        filter: $filter
+        limit: $limit
+        nextToken: $nextToken
+        lastSync: $lastSync
+    ) {
+        items {
+            id
+            title
+            description
+            status
+            taskId
+            team {
+                id
+                name
+                _version
+                _deleted
+                _lastChangedAt
+                createdAt
+                updatedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+        }
+        nextToken
+        startedAt
+    }
+}
 query GetTask($id: ID!) {
-  getTask(id: $id) {
-    id
-    title
-    description
-    status
-    createdAt
-    updatedAt
-  }
+    getTask(id: $id) {
+        id
+        title
+        description
+        status
+        taskId
+        team {
+            id
+            name
+            teamTasks {
+                nextToken
+                startedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+    }
 }
 query ListTasks(
-  $filter: ModelTaskFilterInput
-  $limit: Int
-  $nextToken: String
+    $filter: ModelTaskFilterInput
+    $limit: Int
+    $nextToken: String
 ) {
-  listTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      title
-      description
-      status
-      createdAt
-      updatedAt
+    listTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+        items {
+            id
+            title
+            description
+            status
+            taskId
+            team {
+                id
+                name
+                _version
+                _deleted
+                _lastChangedAt
+                createdAt
+                updatedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+        }
+        nextToken
+        startedAt
     }
-    nextToken
-  }
 }
-query GetNote($id: ID!) {
-  getNote(id: $id) {
-    id
-    content
-    createdAt
-    updatedAt
-  }
-}
-query ListNotes(
-  $filter: ModelNoteFilterInput
-  $limit: Int
-  $nextToken: String
+query SyncTeams(
+    $filter: ModelTeamFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
 ) {
-  listNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      content
-      createdAt
-      updatedAt
+    syncTeams(
+        filter: $filter
+        limit: $limit
+        nextToken: $nextToken
+        lastSync: $lastSync
+    ) {
+        items {
+            id
+            name
+            teamTasks {
+                nextToken
+                startedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+        }
+        nextToken
+        startedAt
     }
-    nextToken
-  }
+}
+query GetTeam($id: ID!) {
+    getTeam(id: $id) {
+        id
+        name
+        teamTasks {
+            items {
+                id
+                title
+                description
+                status
+                taskId
+                _version
+                _deleted
+                _lastChangedAt
+                createdAt
+                updatedAt
+            }
+            nextToken
+            startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+    }
+}
+query ListTeams(
+    $filter: ModelTeamFilterInput
+    $limit: Int
+    $nextToken: String
+) {
+    listTeams(filter: $filter, limit: $limit, nextToken: $nextToken) {
+        items {
+            id
+            name
+            teamTasks {
+                nextToken
+                startedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+        }
+        nextToken
+        startedAt
+    }
 }
