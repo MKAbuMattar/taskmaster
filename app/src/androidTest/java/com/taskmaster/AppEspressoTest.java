@@ -19,6 +19,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
 import androidx.test.espresso.contrib.RecyclerViewActions;
 
 @RunWith(AndroidJUnit4.class)
@@ -29,34 +30,34 @@ public class AppEspressoTest {
       new ActivityScenarioRule<>(MainActivity.class);
 
   @Test
-  public void testTheMainActivity(){
+  public void testTheMainActivity() {
     onView(withId(R.id.myTasks)).check(matches(withText("My Tasks")));
   }
 
   @Test
-  public void testTheSettingActivity(){
+  public void testTheSettingActivity() {
     onView(withId(R.id.settingsButton)).perform(click());
     onView(withId(R.id.settingsTitle)).check(matches(withText("Settings")));
   }
 
   @Test
-  public void testTheAddTaskActivity(){
+  public void testTheAddTaskActivity() {
     onView(withId(R.id.addTaskButton)).perform(click());
     onView(withId(R.id.addATask)).check(matches(withText("Add Task")));
   }
 
   @Test
-  public void testTheAllTaskActivity(){
+  public void testTheAllTaskActivity() {
     onView(withId(R.id.allTasksButton)).perform(click());
     onView(withId(R.id.allTasksLabel)).check(matches(withText("All Tasks")));
   }
 
   @Test
-  public void testAddNewTask(){
+  public void testAddNewTask() {
     onView(withId(R.id.addTaskButton)).perform(click());
 
-    onView(withId(R.id.newTaskName)).perform(typeText("New Task"),closeSoftKeyboard());
-    onView(withId(R.id.newTaskBody)).perform(typeText("Task Details"),closeSoftKeyboard());
+    onView(withId(R.id.newTaskName)).perform(typeText("New Task"), closeSoftKeyboard());
+    onView(withId(R.id.newTaskBody)).perform(typeText("Task Details"), closeSoftKeyboard());
 
     onView(withId(R.id.newTaskSubmit)).perform(click());
 
@@ -72,7 +73,7 @@ public class AppEspressoTest {
     Thread.sleep(5000);
 
     onView(withId(R.id.List_tasks))
-        .perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
 
     onView(withId(R.id.taskDetailTitle)).check(matches(withText("New Task")));
@@ -81,10 +82,10 @@ public class AppEspressoTest {
   }
 
   @Test
-  public void testChangeUserName(){
+  public void testChangeUserName() {
     onView(withId(R.id.settingsButton)).perform(click());
 
-    onView(withId(R.id.usernameInput)).perform(typeText("Mohammad"),closeSoftKeyboard());
+    onView(withId(R.id.usernameInput)).perform(typeText("Mohammad"), closeSoftKeyboard());
     onView(withId(R.id.usernameSaveButton)).perform(click());
 
     onView(withId(R.id.userTasksLabel)).check(matches(withText("Mohammad's Tasks")));

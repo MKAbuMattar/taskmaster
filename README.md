@@ -1,6 +1,7 @@
 # Task Master
 
-Teams may use this Android app to handle tasks. Adding, assigning, tracking, and deleting tasks are all part of this process.
+Teams may use this Android app to handle tasks. Adding, assigning, tracking, and deleting tasks are
+all part of this process.
 
 
 ***
@@ -68,7 +69,6 @@ Screen Shots Log / 12/08/2021
 
 ![](screenshots/lab29/Screenshot_6.png)
 
-
 Screen Shots Log / 15/08/2021
 
 ![](screenshots/lab31/Screenshot_1.png)
@@ -76,3 +76,15 @@ Screen Shots Log / 15/08/2021
 Screen Shots Log / 18/08/2021
 
 ![](screenshots/lab32/Screenshot_1.png)
+
+Screen Shots Log / 21/08/2021
+
+![](screenshots/lab33/Screenshot1.png)
+
+![](screenshots/lab33/Screenshot2.png)
+
+![](screenshots/lab33/Screenshot3.png)
+
+![](screenshots/lab33/Screenshot4.png)
+
+![](screenshots/lab33/Screenshot5.png)
