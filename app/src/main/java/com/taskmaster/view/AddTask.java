@@ -15,16 +15,14 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.taskmaster.R;
-import com.taskmaster.dao.TaskDao;
-import com.taskmaster.database.TaskDatabase;
-//import com.taskmaster.model.Task;
+
+import java.util.Objects;
 
 public class AddTask extends AppCompatActivity {
 
@@ -33,18 +31,11 @@ public class AddTask extends AppCompatActivity {
   private String teamName = null;
   private Team teamData = null;
 
-//  private TaskDatabase database;
-//  private TaskDao taskDao;
-
   @SuppressLint("RestrictedApi")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_task);
-
-//    database = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, MainActivity.TASK_LIST)
-//        .allowMainThreadQueries().build();
-//    taskDao = database.taskDao();
 
     Spinner spinner = findViewById(R.id.spinner_status);
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -71,36 +62,32 @@ public class AddTask extends AppCompatActivity {
     Button newTaskCreateButton = findViewById(R.id.newTaskSubmit);
     newTaskCreateButton.setOnClickListener(newTaskCreateListener);
 
-    getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(getSupportActionBar()).setDefaultDisplayHomeAsUpEnabled(true);
 
   }
 
-  private final View.OnClickListener newTaskCreateListener = new View.OnClickListener() {
-    public void onClick(View v) {
-      String taskTitle = ((EditText) findViewById(R.id.newTaskName)).getText().toString();
-      String taskBody = ((EditText) findViewById(R.id.newTaskBody)).getText().toString();
-      String taskStatus = spinner_task_status;
+  private final View.OnClickListener newTaskCreateListener = v -> {
+    String taskTitle = ((EditText) findViewById(R.id.newTaskName)).getText().toString();
+    String taskBody = ((EditText) findViewById(R.id.newTaskBody)).getText().toString();
+    String taskStatus = spinner_task_status;
 
 
-      getTeamDetailFromAPIByName(teamName);
+    getTeamDetailFromAPIByName(teamName);
 
-      try {
-        Thread.sleep(1500);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-
-      Task item = Task.builder().title(taskTitle).description(taskBody).team(teamData).status(taskStatus).build();
-      MainActivity.saveTaskToAPI(item);
-
-//      taskDao.insertOne(new Task(taskTitle,taskBody,taskStatus));
-//      MainActivity.saveDataToAmplify(taskTitle, taskBody, taskStatus);
-
-      TextView successLabel = findViewById(R.id.newTaskSubmitSuccess);
-      successLabel.setVisibility(View.VISIBLE);
+    try {
+      Thread.sleep(1500);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
+
+    Task item = Task.builder().title(taskTitle).description(taskBody).team(teamData).status(taskStatus).build();
+    MainActivity.saveTaskToAPI(item);
+
+    TextView successLabel = findViewById(R.id.newTaskSubmitSuccess);
+    successLabel.setVisibility(View.VISIBLE);
   };
 
+  @SuppressLint("NonConstantResourceId")
   public void onClickRadioButton(View view) {
     boolean checked = ((RadioButton) view).isChecked();
     switch (view.getId()) {

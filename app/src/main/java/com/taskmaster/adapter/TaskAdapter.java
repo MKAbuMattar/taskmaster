@@ -56,7 +56,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private final TextView title;
     private final TextView body;
     private final TextView status;
-    private final TextView delete;
 
     ViewHolder(@NonNull View itemView, OnTaskItemClickListener listener) {
       super(itemView);
@@ -64,21 +63,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
       title = itemView.findViewById(R.id.title_label);
       body = itemView.findViewById(R.id.body_label);
       status = itemView.findViewById(R.id.status_label);
-      delete = itemView.findViewById(R.id.delete);
+      TextView delete = itemView.findViewById(R.id.delete);
 
-      itemView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          listener.onItemClicked(getAdapterPosition());
-        }
-      });
+      itemView.setOnClickListener(v -> listener.onItemClicked(getBindingAdapterPosition()));
 
-      delete.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          listener.onDeleteItem(getAdapterPosition());
-        }
-      });
+      delete.setOnClickListener(v -> listener.onDeleteItem(getBindingAdapterPosition()));
     }
   }
 }
