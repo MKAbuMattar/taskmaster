@@ -16,6 +16,8 @@ import android.widget.RadioButton;
 
 import com.taskmaster.R;
 
+import java.util.Objects;
+
 public class Settings extends AppCompatActivity {
 
 
@@ -28,26 +30,25 @@ public class Settings extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
 
-    getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(getSupportActionBar()).setDefaultDisplayHomeAsUpEnabled(true);
 
     Button saveUsernameButton = findViewById(R.id.usernameSaveButton);
     saveUsernameButton.setOnClickListener(updateUsernameListener);
   }
 
-  private final View.OnClickListener updateUsernameListener = new View.OnClickListener() {
-    public void onClick(View v) {
-      SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-      SharedPreferences.Editor editor = preferences.edit();
-      EditText usernameField = findViewById(R.id.usernameInput);
-      String username = usernameField.getText().toString();
-      editor.putString("username", username);
-      editor.putString("teamName", teamName);
-      editor.apply();
-      Intent i = new Intent(getBaseContext(), MainActivity.class);
-      startActivity(i);
-    }
+  private final View.OnClickListener updateUsernameListener = v -> {
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+    SharedPreferences.Editor editor = preferences.edit();
+    EditText usernameField = findViewById(R.id.usernameInput);
+    String username = usernameField.getText().toString();
+    editor.putString("username", username);
+    editor.putString("teamName", teamName);
+    editor.apply();
+    Intent i = new Intent(getBaseContext(), MainActivity.class);
+    startActivity(i);
   };
 
+  @SuppressLint("NonConstantResourceId")
   public void onClickChooseYourTeam(View view) {
     boolean checked = ((RadioButton) view).isChecked();
     switch (view.getId()) {

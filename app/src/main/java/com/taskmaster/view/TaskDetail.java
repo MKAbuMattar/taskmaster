@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.taskmaster.R;
 
+import java.util.Objects;
+
 public class TaskDetail extends AppCompatActivity {
 
   @SuppressLint("RestrictedApi")
@@ -17,7 +19,7 @@ public class TaskDetail extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_task_detail);
 
-    getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(getSupportActionBar()).setDefaultDisplayHomeAsUpEnabled(true);
 
     String taskTitle = getIntent().getStringExtra(MainActivity.TASK_TITLE);
     TextView taskTitleID = findViewById(R.id.taskDetailTitle);

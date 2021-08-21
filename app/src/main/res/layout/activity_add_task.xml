@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Task Status"
+        android:text="@string/task_status"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:text="Choose a Team"
+            android:text="@string/choose_a_team"
             android:textSize="23sp" />
 
         <RadioGroup
@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClickRadioButton"
-                android:text="team 1" />
+                android:text="@string/team_1" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/team2"
@@ -147,7 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClickRadioButton"
-                android:text="team 2" />
+                android:text="@string/team_2" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/team3"
@@ -155,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClickRadioButton"
-                android:text="team 3" />
+                android:text="@string/team_3" />
 
         </RadioGroup>
 
