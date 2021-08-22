@@ -27,4 +27,12 @@
     <string name="body_label">body_label</string>
     <string name="status_label">status_label</string>
     <string name="delete">delete</string>
+    <string name="verification">Verification</string>
+    <string name="verification_code">verification code</string>
+    <string name="login">login</string>
+    <string name="email">email</string>
+    <string name="username">username</string>
+    <string name="signup">Signup</string>
+    <string name="password">password</string>
+    <string name="logout">logout</string>
 </resources>

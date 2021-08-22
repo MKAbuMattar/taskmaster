@@ -1,163 +1,163 @@
 # this is an auto generated file. This will be overwritten
 subscription OnCreateTask {
-    onCreateTask {
-        id
-        title
-        description
-        status
-        taskId
-        team {
-            id
-            name
-            teamTasks {
-                nextToken
-                startedAt
-            }
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+  onCreateTask {
+    id
+    title
+    description
+    status
+    taskId
+    team {
+      id
+      name
+      teamTasks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
 }
 subscription OnUpdateTask {
-    onUpdateTask {
-        id
-        title
-        description
-        status
-        taskId
-        team {
-            id
-            name
-            teamTasks {
-                nextToken
-                startedAt
-            }
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+  onUpdateTask {
+    id
+    title
+    description
+    status
+    taskId
+    team {
+      id
+      name
+      teamTasks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
 }
 subscription OnDeleteTask {
-    onDeleteTask {
+  onDeleteTask {
+    id
+    title
+    description
+    status
+    taskId
+    team {
+      id
+      name
+      teamTasks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateTeam {
+  onCreateTeam {
+    id
+    name
+    teamTasks {
+      items {
         id
         title
         description
         status
         taskId
-        team {
-            id
-            name
-            teamTasks {
-                nextToken
-                startedAt
-            }
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      nextToken
+      startedAt
     }
-}
-subscription OnCreateTeam {
-    onCreateTeam {
-        id
-        name
-        teamTasks {
-            items {
-                id
-                title
-                description
-                status
-                taskId
-                _version
-                _deleted
-                _lastChangedAt
-                createdAt
-                updatedAt
-            }
-            nextToken
-            startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
 }
 subscription OnUpdateTeam {
-    onUpdateTeam {
+  onUpdateTeam {
+    id
+    name
+    teamTasks {
+      items {
         id
-        name
-        teamTasks {
-            items {
-                id
-                title
-                description
-                status
-                taskId
-                _version
-                _deleted
-                _lastChangedAt
-                createdAt
-                updatedAt
-            }
-            nextToken
-            startedAt
-        }
+        title
+        description
+        status
+        taskId
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      nextToken
+      startedAt
     }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
 }
 subscription OnDeleteTeam {
-    onDeleteTeam {
+  onDeleteTeam {
+    id
+    name
+    teamTasks {
+      items {
         id
-        name
-        teamTasks {
-            items {
-                id
-                title
-                description
-                status
-                taskId
-                _version
-                _deleted
-                _lastChangedAt
-                createdAt
-                updatedAt
-            }
-            nextToken
-            startedAt
-        }
+        title
+        description
+        status
+        taskId
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      nextToken
+      startedAt
     }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
 }
