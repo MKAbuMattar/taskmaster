@@ -88,3 +88,17 @@ Screen Shots Log / 21/08/2021
 ![](screenshots/lab33/Screenshot4.png)
 
 ![](screenshots/lab33/Screenshot5.png)
+
+Screen Shots Log / 22/08/2021
+
+![](screenshots/lab36/Screenshot1.png)
+
+![](screenshots/lab36/Screenshot2.png)
+
+![](screenshots/lab36/Screenshot3.png)
+
+![](screenshots/lab36/Screenshot4.png)
+
+![](screenshots/lab36/Screenshot5.png)
+
+![](screenshots/lab36/Screenshot6.png)

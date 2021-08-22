@@ -38,6 +38,7 @@ public class AddTask extends AppCompatActivity {
     setContentView(R.layout.activity_add_task);
 
     Spinner spinner = findViewById(R.id.spinner_status);
+
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
         R.array.task_status_array, android.R.layout.simple_spinner_item);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
