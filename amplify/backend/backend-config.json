@@ -40,5 +40,11 @@
         ]
       }
     }
+  },
+  "storage": {
+    "s3bbc54020": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

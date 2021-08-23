@@ -6,6 +6,7 @@ subscription OnCreateTask {
     description
     status
     taskId
+    fileName
     team {
       id
       name
@@ -33,6 +34,7 @@ subscription OnUpdateTask {
     description
     status
     taskId
+    fileName
     team {
       id
       name
@@ -60,6 +62,7 @@ subscription OnDeleteTask {
     description
     status
     taskId
+    fileName
     team {
       id
       name
@@ -91,6 +94,7 @@ subscription OnCreateTeam {
         description
         status
         taskId
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -118,6 +122,7 @@ subscription OnUpdateTeam {
         description
         status
         taskId
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -145,6 +150,7 @@ subscription OnDeleteTeam {
         description
         status
         taskId
+        fileName
         _version
         _deleted
         _lastChangedAt

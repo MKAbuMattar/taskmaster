@@ -35,4 +35,7 @@
     <string name="signup">Signup</string>
     <string name="password">password</string>
     <string name="logout">logout</string>
+    <string name="upload_file">upload file</string>
+    <string name="link">link</string>
+    <string name="todo">TODO</string>
 </resources>

@@ -5,12 +5,13 @@ type Task
     title: String!
     description: String
     status: String
-    taskId:ID!
+    taskId: ID!
+    fileName: String
     team: Team @connection(fields: ["taskId"])
 }
 
 type Team @model {
-    id:ID!
-    name:String!
+    id: ID!
+    name: String!
     teamTasks: [Task] @connection(keyName: "taskItem" , fields:["id"])
 }
