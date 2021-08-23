@@ -1,11 +1,17 @@
 package com.taskmaster.view;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 //import androidx.room.Room;
 
+import android.os.FileUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,12 +22,18 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.taskmaster.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class AddTask extends AppCompatActivity {
@@ -30,6 +42,12 @@ public class AddTask extends AppCompatActivity {
   private String spinner_task_status = null;
   private String teamName = null;
   private Team teamData = null;
+  static String pattern = "yyMMddHHmmssZ";
+  @SuppressLint("SimpleDateFormat")
+  static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+  private static String FileUploadName= simpleDateFormat.format(new Date());
+  private static String fileUploadExtention = null;
+  private static File uploadFile = null;
 
   @SuppressLint("RestrictedApi")
   @Override
@@ -57,6 +75,9 @@ public class AddTask extends AppCompatActivity {
       }
     });
 
+    Button uploadFile = findViewById(R.id.uploadFileBtn);
+    uploadFile.setOnClickListener(v1 -> getFileFromDevice());
+
     TextView successLabel = findViewById(R.id.newTaskSubmitSuccess);
     successLabel.setVisibility(View.GONE);
 
@@ -81,12 +102,68 @@ public class AddTask extends AppCompatActivity {
       e.printStackTrace();
     }
 
-    Task item = Task.builder().title(taskTitle).description(taskBody).team(teamData).status(taskStatus).build();
-    MainActivity.saveTaskToAPI(item);
+    Task item = Task.builder().
+        title(taskTitle).
+        description(taskBody).
+        team(teamData).
+        status(taskStatus).
+        fileName(FileUploadName +"."+ fileUploadExtention.split("/")[1]).
+        build();
+
+    saveTaskToAPI(item);
 
     TextView successLabel = findViewById(R.id.newTaskSubmitSuccess);
     successLabel.setVisibility(View.VISIBLE);
   };
+
+  public void saveTaskToAPI(Task item) {
+    Amplify.Storage.uploadFile(
+        FileUploadName +"."+ fileUploadExtention.split("/")[1],
+        uploadFile,
+        success -> {
+          Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());
+        },
+        error -> {
+          Log.e(TAG, "uploadFileToS3: failed " + error.toString());
+        }
+    );
+    Amplify.API.mutate(ModelMutation.create(item),
+        success -> Log.i(TAG, "Saved item to api : " + success.getData()),
+        error -> Log.e(TAG, "Could not save item to API/dynamodb", error));
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.Q)
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == 999 && resultCode == RESULT_OK) {
+      Uri uri = data.getData();
+      fileUploadExtention = getContentResolver().getType(uri);
+
+      Log.i(TAG, "onActivityResult: gg is " +fileUploadExtention);
+      Log.i(TAG, "onActivityResult: returned from file explorer");
+      Log.i(TAG, "onActivityResult: => " + data.getData());
+      Log.i(TAG, "onActivityResult:  data => " + data.getType());
+
+      uploadFile = new File(getApplicationContext().getFilesDir(), "uploadFile");
+
+      try {
+        InputStream inputStream = getContentResolver().openInputStream(data.getData());
+        FileUtils.copy(inputStream, new FileOutputStream(uploadFile));
+      } catch (Exception exception) {
+        Log.e(TAG, "onActivityResult: file upload failed" + exception.toString());
+      }
+
+    }
+  }
+
+  private void getFileFromDevice() {
+    Intent upload = new Intent(Intent.ACTION_GET_CONTENT);
+    upload.setType("*/*");
+    upload = Intent.createChooser(upload, "Choose a File");
+    startActivityForResult(upload, 999); // deprecated
+  }
 
   @SuppressLint("NonConstantResourceId")
   public void onClickRadioButton(View view) {

@@ -26,6 +26,7 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.taskmaster.R;
 import com.taskmaster.adapter.TaskAdapter;
 
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
   public static final String TASK_TITLE = "taskTitle";
   public static final String TASK_BODY = "taskBody";
   public static final String TASK_STATUS = "taskStatus";
+  public static final String TASK_FILE = "taskFile";
   private static final String TAG = "MainActivity";
 
   private static List<Task> taskList = new ArrayList<>();
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     try {
 //      Amplify.addPlugin(new AWSDataStorePlugin());
       Amplify.addPlugin(new AWSCognitoAuthPlugin());
+      Amplify.addPlugin(new AWSS3StoragePlugin());
       Amplify.addPlugin(new AWSApiPlugin());
       Amplify.configure(getApplicationContext());
 
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         goToDetailsIntent.putExtra(TASK_TITLE, taskList.get(position).getTitle());
         goToDetailsIntent.putExtra(TASK_BODY, taskList.get(position).getDescription());
         goToDetailsIntent.putExtra(TASK_STATUS, taskList.get(position).getStatus());
+        goToDetailsIntent.putExtra(TASK_FILE, taskList.get(position).getFileName());
         startActivity(goToDetailsIntent);
       }
 
