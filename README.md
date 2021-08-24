@@ -8,23 +8,23 @@ all part of this process.
 
 Screen Shots Log / 09/08/2021
 
-![](screenshots/Screenshot_1.png)
+![](screenshots/lab27/Screenshot_1.png)
 
-![](screenshots/Screenshot_2.png)
+![](screenshots/lab27/Screenshot_2.png)
 
-![](screenshots/Screenshot_3.png)
+![](screenshots/lab27/Screenshot_3.png)
 
-![](screenshots/Screenshot_4.png)
+![](screenshots/lab27/Screenshot_4.png)
 
-![](screenshots/Screenshot_5.png)
+![](screenshots/lab27/Screenshot_5.png)
 
-![](screenshots/Screenshot_6.png)
+![](screenshots/lab27/Screenshot_6.png)
 
-![](screenshots/Screenshot_7.png)
+![](screenshots/lab27/Screenshot_7.png)
 
-![](screenshots/Screenshot_8.png)
+![](screenshots/lab27/Screenshot_8.png)
 
-![](screenshots/Screenshot_9.png)
+![](screenshots/lab27/Screenshot_9.png)
 
 
 ***
@@ -115,3 +115,9 @@ Screen Shots Log / 23/08/2021
 ![](screenshots/lab37/Screenshot4.png)
 
 ![](screenshots/lab37/Screenshot5.png)
+
+Screen Shots Log / 24/08/2021
+
+![](screenshots/lab38/Screenshot1.png)
+
+![](screenshots/lab38/Screenshot2.png)
