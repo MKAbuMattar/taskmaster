@@ -25,7 +25,7 @@ import java.util.Objects;
 public class TaskDetail extends AppCompatActivity {
 
   private static final String TAG = "TaskDetail";
-  private URL url =null;
+  private URL url = null;
   private Handler handler;
 
   @SuppressLint("RestrictedApi")
@@ -53,21 +53,18 @@ public class TaskDetail extends AppCompatActivity {
 
     getFileFromS3Storage(fileName);
 
-    try {
-      Thread.sleep(1500);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
 
-    String linkedText = String.format("<a href=\"%s\">download File</a> ", url);
-
-    TextView test = findViewById(R.id.taskDetailLink);
-    test.setText(Html.fromHtml(linkedText));
-    test.setMovementMethod(LinkMovementMethod.getInstance());
     ImageView imageView = findViewById(R.id.taskDetailImg);
 
     handler = new Handler(Looper.getMainLooper(),
         message -> {
+
+          String linkedText = String.format("<a href=\"%s\">download File</a> ", url);
+
+          TextView link = findViewById(R.id.taskDetailLink);
+          link.setText(Html.fromHtml(linkedText));
+          link.setMovementMethod(LinkMovementMethod.getInstance());
+
           Glide.with(getBaseContext())
               .load(url.toString())
               .placeholder(R.drawable.ic_pictures)
