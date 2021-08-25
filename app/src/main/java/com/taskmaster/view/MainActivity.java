@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
     taskList = new ArrayList<>();
 
+
+
     // Initialize PinpointManager
     getPinpointManager(getApplicationContext());
 
