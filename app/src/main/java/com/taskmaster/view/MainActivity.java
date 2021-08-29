@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     taskList = new ArrayList<>();
 
 
-
     // Initialize PinpointManager
     getPinpointManager(getApplicationContext());
 
@@ -84,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
       Log.e("Tutorial", "Could not initialize Amplify", e);
     }
 
-    if (Amplify.Auth.getCurrentUser()!= null){
+    if (Amplify.Auth.getCurrentUser() != null) {
       Log.i(TAG, "Auth: " + Amplify.Auth.getCurrentUser().toString());
-    }else {
+    } else {
       Log.i(TAG, "Auth:  no user " + Amplify.Auth.getCurrentUser());
-      Intent goToLogin= new Intent(this,LoginActivity.class);
+      Intent goToLogin = new Intent(this, LoginActivity.class);
       startActivity(goToLogin);
     }
 
@@ -160,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
 
     getTaskDataFromAPI();
 
+//    throw new RuntimeException("Test Crash");
+
   }
 
   @SuppressLint("SetTextI18n")
@@ -167,11 +168,11 @@ public class MainActivity extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
 
-    if (Amplify.Auth.getCurrentUser()!= null){
+    if (Amplify.Auth.getCurrentUser() != null) {
       TextView userNameText = (findViewById(R.id.userTasksLabel));
-      userNameText.setText(Amplify.Auth.getCurrentUser().getUsername()+ "'s Tasks");
-    }else {
-      Intent goToLogin= new Intent(this,LoginActivity.class);
+      userNameText.setText(Amplify.Auth.getCurrentUser().getUsername() + "'s Tasks");
+    } else {
+      Intent goToLogin = new Intent(this, LoginActivity.class);
       startActivity(goToLogin);
     }
 
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 //    userLabel.setText(username);
     teamNameLabel.setText(teamName);
 
-    if (teamNameData!= null){
+    if (teamNameData != null) {
       getTeamDetailFromAPIByName();
       try {
         Thread.sleep(2000);
@@ -261,19 +262,19 @@ public class MainActivity extends AppCompatActivity {
 
 
   public void getTeamDetailFromAPIByName() {
-      Amplify.API.query(
-          ModelQuery.list(Team.class, Team.NAME.contains(teamNameData)),
-          response -> {
-            for (Team teamDetail : response.getData()) {
-              Log.i(TAG, teamDetail.toString());
-              teamData = teamDetail;
-            }
-          },
-          error -> Log.e(TAG, "Query failure", error)
-      );
+    Amplify.API.query(
+        ModelQuery.list(Team.class, Team.NAME.contains(teamNameData)),
+        response -> {
+          for (Team teamDetail : response.getData()) {
+            Log.i(TAG, teamDetail.toString());
+            teamData = teamDetail;
+          }
+        },
+        error -> Log.e(TAG, "Query failure", error)
+    );
   }
 
-  public  void  getTaskDataFromAPIByTeam(){
+  public void getTaskDataFromAPIByTeam() {
     Log.i(TAG, "getTaskDataFromAPIByTeam: get task by team");
 
     Amplify.API.query(ModelQuery.list(Task.class, Task.TEAM.contains(teamData.getId())),
@@ -281,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
           for (Task task : response.getData()) {
 
             Log.i(TAG, "task-team-id: " + task.getTeam().getId());
-            Log.i(TAG, "team-id: "+ teamData.getId());
+            Log.i(TAG, "team-id: " + teamData.getId());
             taskList.add(task);
 
             Log.i(TAG, "getFrom api by team: the Task from api are => " + task);
@@ -292,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
     );
   }
 
-  public  void getCurrentUser() {
+  public void getCurrentUser() {
     AuthUser authUser = Amplify.Auth.getCurrentUser();
     currentUsername = authUser.getUsername();
     Log.i(TAG, "getCurrentUser: " + authUser.toString());
@@ -300,13 +301,13 @@ public class MainActivity extends AppCompatActivity {
     Log.i(TAG, "getCurrentUser: userId" + authUser.getUserId());
   }
 
-  public void logout(){
+  public void logout() {
     Amplify.Auth.signOut(
-        () ->{
+        () -> {
           Log.i("AuthQuickstart", "Signed out successfully");
           Intent goToLogin = new Intent(getBaseContext(), LoginActivity.class);
           startActivity(goToLogin);
-        } ,
+        },
         error -> Log.e("AuthQuickstart", error.toString())
     );
   }

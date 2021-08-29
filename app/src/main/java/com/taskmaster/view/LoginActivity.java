@@ -29,15 +29,15 @@ public class LoginActivity extends AppCompatActivity {
     loginBtn.setOnClickListener(v -> {
       String email = emailInput.getText().toString();
       String password = passwordInput.getText().toString();
-      if (!email.isEmpty() && !password.isEmpty()){
-        signIn(email,password);
-      }else {
+      if (!email.isEmpty() && !password.isEmpty()) {
+        signIn(email, password);
+      } else {
         Toast.makeText(LoginActivity.this, "Please insert your info.??", Toast.LENGTH_SHORT).show();
       }
     });
 
     signupBtn.setOnClickListener(v -> {
-      Intent goToSignUp = new Intent(LoginActivity.this,SignupActivity.class);
+      Intent goToSignUp = new Intent(LoginActivity.this, SignupActivity.class);
       startActivity(goToSignUp);
     });
   }
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         success -> {
           Log.i(TAG, "signIn: worked " + success.toString());
           Intent goToMain = new Intent(LoginActivity.this, MainActivity.class);
-          goToMain.putExtra("username",username);
+          goToMain.putExtra("username", username);
           startActivity(goToMain);
         },
         error -> Log.e(TAG, "signIn: failed" + error.toString()));

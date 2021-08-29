@@ -94,5 +94,4 @@
         app:layout_constraintTop_toBottomOf="@+id/login_btn" />
 
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

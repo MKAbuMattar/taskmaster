@@ -82,14 +82,14 @@ public class TaskDetail extends AppCompatActivity {
         result -> {
           Log.i(TAG, "Successfully downloaded: " + result.getFile().getAbsoluteFile());
         },
-        error -> Log.e(TAG,  "Download Failure", error)
+        error -> Log.e(TAG, "Download Failure", error)
     );
 
     Amplify.Storage.getUrl(
         key,
         result -> {
           Log.i(TAG, "Successfully generated: " + result.getUrl());
-          url= result.getUrl();
+          url = result.getUrl();
           handler.sendEmptyMessage(1);
         },
         error -> Log.e(TAG, "URL generation failure", error)
