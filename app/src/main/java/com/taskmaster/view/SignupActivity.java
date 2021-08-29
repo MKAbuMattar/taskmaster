@@ -27,20 +27,20 @@ public class SignupActivity extends AppCompatActivity {
     EditText usernameInput = findViewById(R.id.signup_usernameInput);
     EditText passwordInput = findViewById(R.id.signup_passwordInput);
     Button signupBtn = findViewById(R.id.signup_btn);
-    Button   LoginBtn = findViewById(R.id.signup_loginBtn);
+    Button LoginBtn = findViewById(R.id.signup_loginBtn);
 
     signupBtn.setOnClickListener(v -> {
       String email = emailInput.getText().toString();
       String username = usernameInput.getText().toString();
       String password = passwordInput.getText().toString();
-      if (!email.isEmpty() && !username.isEmpty() && !password.isEmpty()){
-        signUp(username,email,password);
-      }else {
+      if (!email.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
+        signUp(username, email, password);
+      } else {
         Toast.makeText(SignupActivity.this, "Please insert your info.??", Toast.LENGTH_SHORT).show();
       }
     });
     LoginBtn.setOnClickListener(v -> {
-      Intent goToLogin = new Intent(SignupActivity.this,LoginActivity.class);
+      Intent goToLogin = new Intent(SignupActivity.this, LoginActivity.class);
       startActivity(goToLogin);
     });
 

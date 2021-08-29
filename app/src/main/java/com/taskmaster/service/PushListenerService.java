@@ -1,6 +1,7 @@
 package com.taskmaster.service;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,7 +81,6 @@ public class PushListenerService extends FirebaseMessagingService {
     intent.putExtra(INTENT_SNS_NOTIFICATION_DATA, dataMap);
     LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
   }
-
 
 
   /**

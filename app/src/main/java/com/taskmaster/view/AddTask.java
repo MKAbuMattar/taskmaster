@@ -45,15 +45,24 @@ public class AddTask extends AppCompatActivity {
   static String pattern = "yyMMddHHmmssZ";
   @SuppressLint("SimpleDateFormat")
   static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-  private static String FileUploadName= simpleDateFormat.format(new Date());
-  private static String fileUploadExtention = null;
+  private static String FileUploadName = simpleDateFormat.format(new Date());
+  private static String fileUploadExtension = null;
   private static File uploadFile = null;
 
+  @RequiresApi(api = Build.VERSION_CODES.Q)
   @SuppressLint("RestrictedApi")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_task);
+
+    if (Amplify.Auth.getCurrentUser() != null) {
+      Log.i(TAG, "Auth: " + Amplify.Auth.getCurrentUser().toString());
+    } else {
+      Log.i(TAG, "Auth:  no user " + Amplify.Auth.getCurrentUser());
+      Intent goToLogin = new Intent(this, LoginActivity.class);
+      startActivity(goToLogin);
+    }
 
     Spinner spinner = findViewById(R.id.spinner_status);
 
@@ -74,6 +83,16 @@ public class AddTask extends AppCompatActivity {
         spinner_task_status = (String) parent.getItemAtPosition(0);
       }
     });
+
+    Intent intent = getIntent();
+    String action = intent.getAction();
+    String type = intent.getType();
+
+    if (Intent.ACTION_SEND.equals(action) && type != null) {
+      if (type.startsWith("image/")) {
+        handleSendImage(intent); // Handle single image being sent
+      }
+    }
 
     Button uploadFile = findViewById(R.id.uploadFileBtn);
     uploadFile.setOnClickListener(v1 -> getFileFromDevice());
@@ -107,7 +126,7 @@ public class AddTask extends AppCompatActivity {
         description(taskBody).
         team(teamData).
         status(taskStatus).
-        fileName(FileUploadName +"."+ fileUploadExtention.split("/")[1]).
+        fileName(FileUploadName + "." + fileUploadExtension.split("/")[1]).
         build();
 
     saveTaskToAPI(item);
@@ -116,9 +135,32 @@ public class AddTask extends AppCompatActivity {
     successLabel.setVisibility(View.VISIBLE);
   };
 
+  @RequiresApi(api = Build.VERSION_CODES.Q)
+  public void handleSendImage(Intent intent) {
+    Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+    if (imageUri != null) {
+      // Update UI to reflect image being shared
+      fileUploadExtension = getContentResolver().getType(imageUri);
+
+      Log.i(TAG, "onActivityResult: gg is " + fileUploadExtension);
+      Log.i(TAG, "onActivityResult: returned from file explorer");
+      Log.i(TAG, "onActivityResult: success choose image");
+
+
+      uploadFile = new File(getApplicationContext().getFilesDir(), "uploadFile");
+
+      try {
+        InputStream inputStream = getContentResolver().openInputStream(imageUri);
+        FileUtils.copy(inputStream, new FileOutputStream(uploadFile));
+      } catch (Exception exception) {
+        Log.e(TAG, "onActivityResult: file upload failed" + exception.toString());
+      }
+    }
+  }
+
   public void saveTaskToAPI(Task item) {
     Amplify.Storage.uploadFile(
-        FileUploadName +"."+ fileUploadExtention.split("/")[1],
+        FileUploadName + "." + fileUploadExtension.split("/")[1],
         uploadFile,
         success -> {
           Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());
@@ -139,9 +181,9 @@ public class AddTask extends AppCompatActivity {
 
     if (requestCode == 999 && resultCode == RESULT_OK) {
       Uri uri = data.getData();
-      fileUploadExtention = getContentResolver().getType(uri);
+      fileUploadExtension = getContentResolver().getType(uri);
 
-      Log.i(TAG, "onActivityResult: gg is " +fileUploadExtention);
+      Log.i(TAG, "onActivityResult: gg is " + fileUploadExtension);
       Log.i(TAG, "onActivityResult: returned from file explorer");
       Log.i(TAG, "onActivityResult: => " + data.getData());
       Log.i(TAG, "onActivityResult:  data => " + data.getType());

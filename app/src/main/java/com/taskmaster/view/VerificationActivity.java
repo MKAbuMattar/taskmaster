@@ -20,7 +20,7 @@ public class VerificationActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_verification);
 
-    EditText verificationCodeInput= findViewById(R.id.verificationCodeInput);
+    EditText verificationCodeInput = findViewById(R.id.verificationCodeInput);
     Button verificationButton = findViewById(R.id.verificationCodeBtn);
 
     Intent intent = getIntent();
@@ -29,11 +29,11 @@ public class VerificationActivity extends AppCompatActivity {
 
     verificationButton.setOnClickListener(v -> {
       String verification_number = verificationCodeInput.getText().toString();
-      verification(username,verification_number,password);
+      verification(username, verification_number, password);
     });
   }
 
-  public void verification(String username, String confirmationNumber,String password) {
+  public void verification(String username, String confirmationNumber, String password) {
     Amplify.Auth.confirmSignUp(
         username,
         confirmationNumber,
