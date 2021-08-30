@@ -29,6 +29,8 @@ public final class Task implements Model {
   public static final QueryField DESCRIPTION = field("Task", "description");
   public static final QueryField STATUS = field("Task", "status");
   public static final QueryField FILE_NAME = field("Task", "fileName");
+  public static final QueryField LOCATION_LATITUDE = field("Task", "locationLatitude");
+  public static final QueryField LOCATION_LONGITUDE = field("Task", "locationLongitude");
   public static final QueryField TEAM = field("Task", "taskId");
   private final @ModelField(targetType = "ID", isRequired = true)
   String id;
@@ -40,6 +42,10 @@ public final class Task implements Model {
   String status;
   private final @ModelField(targetType = "String")
   String fileName;
+  private final @ModelField(targetType = "Float")
+  Double locationLatitude;
+  private final @ModelField(targetType = "Float")
+  Double locationLongitude;
   private final @ModelField(targetType = "Team")
   @BelongsTo(targetName = "taskId", type = Team.class)
   Team team;
@@ -68,6 +74,14 @@ public final class Task implements Model {
     return fileName;
   }
 
+  public Double getLocationLatitude() {
+    return locationLatitude;
+  }
+
+  public Double getLocationLongitude() {
+    return locationLongitude;
+  }
+
   public Team getTeam() {
     return team;
   }
@@ -80,12 +94,14 @@ public final class Task implements Model {
     return updatedAt;
   }
 
-  private Task(String id, String title, String description, String status, String fileName, Team team) {
+  private Task(String id, String title, String description, String status, String fileName, Double locationLatitude, Double locationLongitude, Team team) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.status = status;
     this.fileName = fileName;
+    this.locationLatitude = locationLatitude;
+    this.locationLongitude = locationLongitude;
     this.team = team;
   }
 
@@ -102,6 +118,8 @@ public final class Task implements Model {
           ObjectsCompat.equals(getDescription(), task.getDescription()) &&
           ObjectsCompat.equals(getStatus(), task.getStatus()) &&
           ObjectsCompat.equals(getFileName(), task.getFileName()) &&
+          ObjectsCompat.equals(getLocationLatitude(), task.getLocationLatitude()) &&
+          ObjectsCompat.equals(getLocationLongitude(), task.getLocationLongitude()) &&
           ObjectsCompat.equals(getTeam(), task.getTeam()) &&
           ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
           ObjectsCompat.equals(getUpdatedAt(), task.getUpdatedAt());
@@ -116,6 +134,8 @@ public final class Task implements Model {
         .append(getDescription())
         .append(getStatus())
         .append(getFileName())
+        .append(getLocationLatitude())
+        .append(getLocationLongitude())
         .append(getTeam())
         .append(getCreatedAt())
         .append(getUpdatedAt())
@@ -132,6 +152,8 @@ public final class Task implements Model {
         .append("description=" + String.valueOf(getDescription()) + ", ")
         .append("status=" + String.valueOf(getStatus()) + ", ")
         .append("fileName=" + String.valueOf(getFileName()) + ", ")
+        .append("locationLatitude=" + String.valueOf(getLocationLatitude()) + ", ")
+        .append("locationLongitude=" + String.valueOf(getLocationLongitude()) + ", ")
         .append("team=" + String.valueOf(getTeam()) + ", ")
         .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
         .append("updatedAt=" + String.valueOf(getUpdatedAt()))
@@ -169,6 +191,8 @@ public final class Task implements Model {
         null,
         null,
         null,
+        null,
+        null,
         null
     );
   }
@@ -179,6 +203,8 @@ public final class Task implements Model {
         description,
         status,
         fileName,
+        locationLatitude,
+        locationLongitude,
         team);
   }
 
@@ -198,6 +224,10 @@ public final class Task implements Model {
 
     BuildStep fileName(String fileName);
 
+    BuildStep locationLatitude(Double locationLatitude);
+
+    BuildStep locationLongitude(Double locationLongitude);
+
     BuildStep team(Team team);
   }
 
@@ -208,6 +238,8 @@ public final class Task implements Model {
     private String description;
     private String status;
     private String fileName;
+    private Double locationLatitude;
+    private Double locationLongitude;
     private Team team;
 
     @Override
@@ -220,6 +252,8 @@ public final class Task implements Model {
           description,
           status,
           fileName,
+          locationLatitude,
+          locationLongitude,
           team);
     }
 
@@ -245,6 +279,18 @@ public final class Task implements Model {
     @Override
     public BuildStep fileName(String fileName) {
       this.fileName = fileName;
+      return this;
+    }
+
+    @Override
+    public BuildStep locationLatitude(Double locationLatitude) {
+      this.locationLatitude = locationLatitude;
+      return this;
+    }
+
+    @Override
+    public BuildStep locationLongitude(Double locationLongitude) {
+      this.locationLongitude = locationLongitude;
       return this;
     }
 
@@ -278,12 +324,14 @@ public final class Task implements Model {
 
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String description, String status, String fileName, Team team) {
+    private CopyOfBuilder(String id, String title, String description, String status, String fileName, Double locationLatitude, Double locationLongitude, Team team) {
       super.id(id);
       super.title(title)
           .description(description)
           .status(status)
           .fileName(fileName)
+          .locationLatitude(locationLatitude)
+          .locationLongitude(locationLongitude)
           .team(team);
     }
 
@@ -305,6 +353,16 @@ public final class Task implements Model {
     @Override
     public CopyOfBuilder fileName(String fileName) {
       return (CopyOfBuilder) super.fileName(fileName);
+    }
+
+    @Override
+    public CopyOfBuilder locationLatitude(Double locationLatitude) {
+      return (CopyOfBuilder) super.locationLatitude(locationLatitude);
+    }
+
+    @Override
+    public CopyOfBuilder locationLongitude(Double locationLongitude) {
+      return (CopyOfBuilder) super.locationLongitude(locationLongitude);
     }
 
     @Override

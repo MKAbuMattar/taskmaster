@@ -1,54 +1,71 @@
 package com.taskmaster.view;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplifyframework.core.Amplify;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.taskmaster.R;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Objects;
 
-public class TaskDetail extends AppCompatActivity {
+public class TaskDetail extends AppCompatActivity implements OnMapReadyCallback {
 
-  private static final String TAG = "TaskDetail";
-  private URL url = null;
+
+  private static final String TAG = "TaskDetailsActivity";
+  private URL url =null;
   private Handler handler;
+  private FusedLocationProviderClient mFusedLocationClient;
+  private static final int PERMISSION_ID = 44;
+  private double latitude;
+  private double longitude;
 
-  @SuppressLint("RestrictedApi")
+  GoogleMap googleMap;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_task_detail);
 
-    Objects.requireNonNull(getSupportActionBar()).setDefaultDisplayHomeAsUpEnabled(true);
+    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-    String taskTitle = getIntent().getStringExtra(MainActivity.TASK_TITLE);
-    TextView taskTitleID = findViewById(R.id.taskDetailTitle);
-    taskTitleID.setText(taskTitle);
-
-    String taskBody = getIntent().getStringExtra(MainActivity.TASK_BODY);
-    TextView taskBodyID = findViewById(R.id.taskDetails);
-    taskBodyID.setText(taskBody);
-
-    String taskState = getIntent().getStringExtra(MainActivity.TASK_STATUS);
-    TextView taskStateID = findViewById(R.id.taskDetailState);
-    taskStateID.setText(taskState);
+    // method to get the location
+    getLastLocation();
 
     Intent intent = getIntent();
+    Log.i(TAG, "onCreate: file name " + intent.getExtras().get(MainActivity.TASK_FILE));
+
     String fileName = intent.getExtras().get(MainActivity.TASK_FILE).toString();
 
     getFileFromS3Storage(fileName);
@@ -58,21 +75,39 @@ public class TaskDetail extends AppCompatActivity {
 
     handler = new Handler(Looper.getMainLooper(),
         message -> {
-
-          String linkedText = String.format("<a href=\"%s\">download File</a> ", url);
-
-          TextView link = findViewById(R.id.taskDetailLink);
-          link.setText(Html.fromHtml(linkedText));
-          link.setMovementMethod(LinkMovementMethod.getInstance());
-
           Glide.with(getBaseContext())
               .load(url.toString())
               .placeholder(R.drawable.ic_pictures)
               .error(R.drawable.ic_pictures)
               .centerCrop()
               .into(imageView);
+          String linkedText = String.format("<a href=\"%s\">download File</a> ", url);
+
+          TextView test = findViewById(R.id.taskDetailLink);
+          test.setText(Html.fromHtml(linkedText));
+          test.setMovementMethod(LinkMovementMethod.getInstance());
           return false;
         });
+
+
+    TextView taskTitle = findViewById(R.id.taskDetailTitle);
+    taskTitle.setText(intent.getExtras().get(MainActivity.TASK_TITLE).toString());
+
+    TextView taskBody = findViewById(R.id.taskDetails);
+    taskBody.setText(intent.getExtras().get(MainActivity.TASK_BODY).toString());
+
+    TextView taskStatus = findViewById(R.id.taskDetailState);
+    taskStatus.setText(intent.getExtras().get(MainActivity.TASK_STATUS).toString());
+
+    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        .findFragmentById(R.id.map);
+    mapFragment.getMapAsync(this);
+
+  }
+
+  @Override
+  public void onMapReady(@NonNull GoogleMap googleMap) {
+    this.googleMap = googleMap;
   }
 
   private void getFileFromS3Storage(String key) {
@@ -82,17 +117,112 @@ public class TaskDetail extends AppCompatActivity {
         result -> {
           Log.i(TAG, "Successfully downloaded: " + result.getFile().getAbsoluteFile());
         },
-        error -> Log.e(TAG, "Download Failure", error)
+        error -> Log.e(TAG,  "Download Failure", error)
     );
 
     Amplify.Storage.getUrl(
         key,
         result -> {
           Log.i(TAG, "Successfully generated: " + result.getUrl());
-          url = result.getUrl();
+          url= result.getUrl();
           handler.sendEmptyMessage(1);
         },
         error -> Log.e(TAG, "URL generation failure", error)
     );
+  }
+
+  @SuppressLint("MissingPermission")
+  private void getLastLocation() {
+    // check if permissions are given
+    if (checkPermissions()) {
+
+      // check if location is enabled
+      if (isLocationEnabled()) {
+
+        // getting last
+        // location from
+        // FusedLocationClient
+        // object
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+          @Override
+          public void onComplete(@NonNull com.google.android.gms.tasks.Task<Location> task) {
+            Location location = task.getResult();
+            if (location == null) {
+              requestNewLocationData();
+            } else {
+
+              latitude = location.getLatitude();
+              longitude = location.getLongitude();
+
+              googleMap.addMarker(new MarkerOptions()
+                  .position(new LatLng
+                      (Double.parseDouble(getIntent().getExtras().get(MainActivity.TASK_LATITUDE).toString()),
+                          (Double.parseDouble(getIntent().getExtras().get(MainActivity.TASK_LONGITUDE).toString()))
+                      )).title("Marker"));
+              Log.i(TAG, "onCreate: latitude => "+ latitude);
+              Log.i(TAG, "onCreate: longitude => "+ longitude);
+            }
+          }
+        });
+      } else {
+        Toast.makeText(this, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(intent);
+      }
+    } else {
+      // if permissions aren't available,
+      // request for permissions
+      requestPermissions();
+    }
+  }
+
+  private boolean checkPermissions() {
+    return ActivityCompat
+        .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+        PackageManager.PERMISSION_GRANTED
+        &&
+        ActivityCompat
+            .checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED;
+
+    // If we want background location
+    // on Android 10.0 and higher,
+    // use:
+    // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+  }
+  private boolean isLocationEnabled() {
+    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+    return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+        locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+  }
+
+  @SuppressLint("MissingPermission")
+  private void requestNewLocationData() {
+
+    // Initializing LocationRequest
+    // object with appropriate methods
+    LocationRequest mLocationRequest = new LocationRequest();
+    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    mLocationRequest.setInterval(5);
+    mLocationRequest.setFastestInterval(0);
+    mLocationRequest.setNumUpdates(1);
+
+    // setting LocationRequest
+    // on FusedLocationClient
+    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+    mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+  }
+  private final LocationCallback mLocationCallback = new LocationCallback() {
+
+    @Override
+    public void onLocationResult(LocationResult locationResult) {
+      Location mLastLocation = locationResult.getLastLocation();
+    }
+  };
+
+  private void requestPermissions() {
+    ActivityCompat.requestPermissions(this, new String[]{
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
   }
 }

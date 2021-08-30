@@ -7,6 +7,8 @@ type Task
     status: String
     taskId: ID!
     fileName: String
+    locationLatitude: Float
+    locationLongitude: Float
     team: Team @connection(fields: ["taskId"])
 }
 

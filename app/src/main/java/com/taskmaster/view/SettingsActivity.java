@@ -18,7 +18,7 @@ import com.taskmaster.R;
 
 import java.util.Objects;
 
-public class Settings extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
 
   private static final String TAG = "Settings";

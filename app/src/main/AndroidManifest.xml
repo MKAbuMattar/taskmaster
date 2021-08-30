@@ -9,6 +9,9 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -18,6 +21,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Taskmaster"
         android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
         <service
             android:name=".service.PushListenerService"
             android:exported="false">
@@ -61,7 +73,7 @@
             android:name=".view.TaskDetail"
             android:parentActivityName=".view.MainActivity" />
         <activity
-            android:name=".view.Settings"
+            android:name=".view.SettingsActivity"
             android:parentActivityName=".view.MainActivity" />
     </application>
 
