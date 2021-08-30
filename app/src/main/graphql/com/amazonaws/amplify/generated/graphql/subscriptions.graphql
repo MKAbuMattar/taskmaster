@@ -7,6 +7,8 @@ subscription OnCreateTask {
         status
         taskId
         fileName
+        locationLatitude
+        locationLongitude
         team {
             id
             name
@@ -35,6 +37,8 @@ subscription OnUpdateTask {
         status
         taskId
         fileName
+        locationLatitude
+        locationLongitude
         team {
             id
             name
@@ -63,6 +67,8 @@ subscription OnDeleteTask {
         status
         taskId
         fileName
+        locationLatitude
+        locationLongitude
         team {
             id
             name
@@ -95,6 +101,8 @@ subscription OnCreateTeam {
                 status
                 taskId
                 fileName
+                locationLatitude
+                locationLongitude
                 _version
                 _deleted
                 _lastChangedAt
@@ -123,6 +131,8 @@ subscription OnUpdateTeam {
                 status
                 taskId
                 fileName
+                locationLatitude
+                locationLongitude
                 _version
                 _deleted
                 _lastChangedAt
@@ -151,6 +161,8 @@ subscription OnDeleteTeam {
                 status
                 taskId
                 fileName
+                locationLatitude
+                locationLongitude
                 _version
                 _deleted
                 _lastChangedAt

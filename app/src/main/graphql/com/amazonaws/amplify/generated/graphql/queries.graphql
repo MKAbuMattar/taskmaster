@@ -18,6 +18,8 @@ query SyncTasks(
             status
             taskId
             fileName
+            locationLatitude
+            locationLongitude
             team {
                 id
                 name
@@ -45,6 +47,8 @@ query GetTask($id: ID!) {
         status
         taskId
         fileName
+        locationLatitude
+        locationLongitude
         team {
             id
             name
@@ -78,6 +82,8 @@ query ListTasks(
             status
             taskId
             fileName
+            locationLatitude
+            locationLongitude
             team {
                 id
                 name
@@ -138,6 +144,8 @@ query GetTeam($id: ID!) {
                 status
                 taskId
                 fileName
+                locationLatitude
+                locationLongitude
                 _version
                 _deleted
                 _lastChangedAt
