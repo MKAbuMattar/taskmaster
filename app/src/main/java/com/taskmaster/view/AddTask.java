@@ -40,10 +40,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.taskmaster.R;
 
 import java.io.File;
@@ -63,7 +60,7 @@ public class AddTask extends AppCompatActivity {
   static String pattern = "yyMMddHHmmssZ";
   @SuppressLint("SimpleDateFormat")
   static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-  private static String FileUploadName = simpleDateFormat.format(new Date());
+  private static final String FileUploadName = simpleDateFormat.format(new Date());
   private static String fileUploadExtension = null;
   private static File uploadFile = null;
 
@@ -71,7 +68,6 @@ public class AddTask extends AppCompatActivity {
   private double latitude;
   private double longitude;
 
-  GoogleMap googleMap;
 
   @RequiresApi(api = Build.VERSION_CODES.Q)
   @SuppressLint("RestrictedApi")
@@ -195,12 +191,8 @@ public class AddTask extends AppCompatActivity {
     Amplify.Storage.uploadFile(
         FileUploadName + "." + fileUploadExtension.split("/")[1],
         uploadFile,
-        success -> {
-          Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());
-        },
-        error -> {
-          Log.e(TAG, "uploadFileToS3: failed " + error.toString());
-        }
+        success -> Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey()),
+        error -> Log.e(TAG, "uploadFileToS3: failed " + error.toString())
     );
     Amplify.API.mutate(ModelMutation.create(item),
         success -> Log.i(TAG, "Saved item to api : " + success.getData()),
